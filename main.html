@@ -1,0 +1,211 @@
+<html>
+  <head>
+    <style>
+      body{
+        font-family: verdana;
+        font-weight: normal;
+      }
+      .subtitle{
+        font-size: 10px;
+      }
+      button{
+        background-color: transparent;
+        /* border: 2px solid black; */
+        /* border-radius: 10px; */
+        border: none;
+        height: 350px;
+        font-size: 30px;
+        width: 100%;
+      }
+      button:hover{
+        /* background-color:antiquewhite; */
+        cursor: pointer;
+        width: 110%;
+        border: 2px solid black;
+        border-radius: 20px;
+        box-shadow: 0px 5px 5px 0px;
+      }
+      .button2{
+        background-color: transparent;
+        border: 2px solid black;
+        border-radius: 10px;
+        height: 40px;
+        font-size: 12px;
+        width: 100px;
+        display: block;
+        margin: auto;
+      }
+      .button2:hover{
+        /* background-color: antiquewhite; */
+        cursor: pointer;
+        width: 100px;
+        font-style: italic;
+        box-shadow: none;
+      }
+      .button3{
+        background-color: transparent;
+        border: none;
+        /* border: 1px solid black; */
+        /* border-radius: 4px; */
+        font-size: 12px;
+        width: 200px;
+        height: 20px;
+        display: block;
+        margin: auto;
+      }
+      .button3:hover{
+        /* background-color: lightgray; */
+        /* border: 1px solid black; */
+        /* border-radius: 20px; */
+        border: none;
+        cursor: pointer;
+        width: 200px;
+        font-style: italic;
+        box-shadow: none;
+      }
+      .grid1{
+        display: grid;
+        grid-template-columns: 30% 30% 30%;
+        gap: 5%;
+        width: 95%;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      h5{
+        text-align: center; 
+        font-weight: normal;
+        max-width: 600px;
+        width: 90%;
+        margin: auto;
+      }
+      th{
+        background-color: lightgray;
+        font-weight: normal;
+        font-size: 10px;
+      }
+      td{
+        font-size: 10px;
+      }
+      table{
+        margin: auto;
+      }
+      .showing{
+        display: none;
+      }
+      #leaderboards{
+        border: 2px solid black;
+        border-radius: 10px;
+        padding: 10px;
+        margin: auto;
+        /* display: none; */
+        /* max-width: 600px; */
+        width: 95%;
+        max-width: 800px;
+      }
+    </style>
+  </head>
+  <body>
+    <br>
+    <h1 style="text-align:center; font-weight:normal">The Miltonic Arcade</h1>
+    <h5>Fusing famous 1600s literature and famous 1900s games.</h5>
+    <h5>~</h5>
+    <h5>Are you striving for glory? Looking to leave a legacy like Milton?<br>Aim for the best score to "publish" your name on the leaderboards.</h5>
+    <br>
+    <button class="button2" onclick="document.getElementById('leaderboards').classList.toggle('showing');">Show Leaderboards</button>
+    <div id="leaderboards" class="showing">
+      <div class="grid1">
+        <div>
+          <p style="font-size:12px; text-align:center;">Leaders of <em>First</em></p>
+          <table width="90%">
+            <tr>
+              <th>Name</th>
+              <th>Time</th>
+            </tr>
+            <tr>
+              <td>God</td>
+              <td>1,000,000</td>
+            </tr>
+            <tr>
+              <td>Adam</td>
+              <td>100,000</td>
+            </tr>
+            <tr>
+              <td>Eve</td>
+              <td>10,000</td>
+            </tr>
+          </table>
+        </div>
+        <div>
+          <p style="font-size:12px; text-align:center;">Leaders of <em>Food Fall</em></p>
+          <table width="90%">
+            <tr>
+              <th>Name</th>
+              <th>Time</th>
+            </tr>
+            <tr>
+              <td>Diodati</td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td>Elizabeth</td>
+              <td>10</td>
+            </tr>
+            <tr>
+              <td>Mary</td>
+              <td>10</td>
+            </tr>
+          </table>
+        </div>
+        <div>
+          <p style="font-size:12px; text-align:center;">Leaders of <em>Paper Wars</em></p>
+          <table width="90%">
+            <tr>
+              <th>Name</th>
+              <th>Time</th>
+            </tr>
+            <tr>
+              <td>Milton</td>
+              <td>10</td>
+            </tr>
+            <tr>
+              <td>Milton</td>
+              <td>10</td>
+            </tr>
+            <tr>
+              <td>Milton</td>
+              <td>10</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <br>
+      <p style="max-width:600px; width: 90%; text-align: center; margin: auto; display:block; font-size: 12px;">Drawing from young Milton's anxieties around time passing, and ignoring the <em>Parable of the Talents</em>, scoring favors those who complete games first or go back in time the furthest (depending on the game).</p>
+    </div>
+   
+    <br>
+    <div class="grid1">
+      <div>
+        <form action="first.html">
+          <button type="submit"><img src="images/first.png" width="100%"><br>First<br><span class="subtitle">Super Mario Bros<br>x<br>"Nativity Ode," <em>Paradise Lost</em></span></button>
+        </form>
+      </div>
+      <div>
+        <form action="foodfall.html">
+          <button type="submit"><img src="images/foodfall.png" width="100%"><br>Food Fall<br><span class="subtitle">Avalanche<br>x<br>"Elegy 6," <em>Paradise Lost</em></span></button>
+        </form>
+      </div>
+      <div>
+        <form action="paperwars.html">
+          <button type="submit"><img src="images/paperwars.png" width="100%"><br>Paper Wars<br><span class="subtitle">Space Invaders<br>x<br><em>Areopagitica</em> and others</span></button>
+        </form>
+      </div>
+    </div>
+    <h5>Emma Civello's Milton in the World Project for ENG260: Milton, Spring 2023</h5>
+    <form action="citations.html">
+      <button class="button3" type="submit">Click Here to View Citations</button>
+    </form>
+    <script>
+    </script>
+  </body>
+</html>

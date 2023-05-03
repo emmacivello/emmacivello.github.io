@@ -1,0 +1,343 @@
+<!-- 
+  Sound file sources
+  Harp: https://pixabay.com/sound-effects/harp-flourish-6251/
+ -->
+<html>
+  <head>
+    <style>
+      body{
+        font-family: verdana;
+        font-weight: normal;
+      }
+      canvas{
+        background-color: rgb(195, 228, 255);
+        width: 100%;
+        max-width: 800px;
+        margin: auto;
+        display: block;
+        /* border: 8px ridge cornsilk; makes it too wide */
+      }
+      h3{
+        text-align: center; 
+        font-weight: normal;
+      }
+      /* button{
+        background-color: transparent;
+        border: 2px solid black;
+        border-radius: 10px;
+      }
+      button:hover{
+        background-color: antiquewhite;
+        cursor: pointer;
+      } */
+      button{
+        background-color: transparent;
+        border: 2px solid black;
+        border-radius: 10px;
+      }
+      button:hover{
+        /* background-color: antiquewhite; */
+        cursor: pointer;
+        border-radius: 20px;
+        font-style: italic;
+      }
+      #introDiv{
+        display: block; 
+        margin: auto;
+        /* border: 2px solid black; */
+        /* border-radius: 10px; */
+        padding: 30px;
+      }
+      #endDiv{
+        /* display: block;  */
+        margin: auto;
+        padding: 30px;
+        text-align: center;
+      }
+      .grid1{
+        display: grid;
+        grid-template-columns: 50% 50%;
+      }
+      /* NOT USED Scaling animation keyframes: https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function/scale */
+      /* .scaleAnimation{
+        animation-name: growInOut;
+        animation-duration: 1s;
+      }
+
+      @keyframes growInOut{
+        0%{transform: scale(1);}
+        50%{transform: scale(1.25);}
+        100%{transform: scale(1);}
+      } */
+    </style>
+  </head>
+  <body>
+    <form action="main.html">
+      <button type="submit" style="display:block; margin:auto; position:absolute; top:10px; right:10px;">Home</button>
+    </form>
+    <br>
+    <h1 style="text-align:center; font-weight:normal">Food Fall</h1>
+    
+    <div id="introDiv" style="width:500px;">
+      <button style="display:block; margin:auto;" onclick="main();">Play</button>
+      <p style="text-align:center; font-size:20px;">Background Information</p>
+      <p>Milton writes about a connection between food and the mind and spirit in many works.</p>
+      <ul>
+        <li>In "Elegy 6," veganism and sobriety describe the diet of an accomplished author.</li>
+        <li>In <em>Paradise Lost</em>, proper food might raise humans to angels.</li>
+        <li>Also in <em>Paradise Lost</em>, the fruit from the Tree of Knowledge is intoxicating, and eating it represents effeminite weakness and causes Adam and Eve to fall.</li>
+      </ul>
+      <!-- <hr style="border-top:dotted 1px;">
+      <div style="width:135px; margin:auto;">
+        <img src="images/avatar1r_flip.png" width="40px" height="60px">
+        <img src="images/avatar2r_flip.png" width="40px" height="60px">
+        <img src="images/avatar3r_flip.png" width="40px" height="60px">
+      </div> -->
+      <hr style="border-top:dotted 1px;">
+      <p style="text-align:center; font-size:20px;">How to Play</p>
+      <p>Use A and D or left and right arrows to move back and forth.</p>
+
+      <div class="grid1">
+        <div>
+          <p>Collect (+5 pts):</p>
+          <ul>
+            <li>Water</li>
+            <li>Leaves</li>
+          </ul>
+        </div>
+        <div>
+          <p>Avoid (-5 pts):</p>
+          <ul>
+            <li>Alcohol</li>
+            <li>Meat</li>
+            <li>Fruit from the Tree of Knowledge</li>
+          </ul>
+        </div>
+      </div>
+
+      <p>Following this diet will make your avatar more masculine and angelic. Not following it will make your avatar more Satanic. Turn on volume to hear the Heavenly harps of <em>Paradise Lost</em> Book 3, which accompany the last two positive avatar transformations. Goal: achieve score 50 as quickly as possible.</p>
+    </div>
+    <div id="gameDiv" style="display:none;">
+      <h3 id="userScore">Score: 0</h3>
+      <canvas id="canvas" width="800" height="600"></canvas>
+      <div id="imgSpace" style="display:none;"></div>
+    </div>
+    <div id="endDiv" style="display:none; width:500px;">
+      <!-- <p>Success</p> -->
+      <!-- <p id="timeDisplay"></p> -->
+      <!-- <p id="endMessage"></p> -->
+      <p id="endMessage" style="display: block; margin: auto;"></p>
+    </div>
+    
+
+    <script>
+      function drawAvatar(){
+        var img = "images/avatar"+avatar.img+avatar.dir+".png";
+        graphics.drawImage(document.getElementById(img), avatar.x, avatar.y, avatar.w, avatar.h);
+      }
+
+      function moveAvatar(dir){
+        switch(dir){
+          case "left": if(avatar.x-avatar.vel > 0){avatar.x -= avatar.vel}; avatar.dir="l"; break;
+          case "right": if(avatar.x+avatar.vel+avatar.w < canvas.width){avatar.x += avatar.vel}; avatar.dir="r"; break;
+        }
+      }
+
+      function drawScene(){
+        graphics.clearRect(0,0,canvas.width,canvas.height); //clear
+        graphics.fillStyle = "#BC9E82";
+        graphics.fillRect(0,0,canvas.width,30);
+        drawAvatar(); //draw avatar
+        for(var i=0; i<obstacles.length; i++){//draw obstacles
+          var ob = obstacles[i];
+          graphics.drawImage(document.getElementById(ob.img), ob.x, ob.y, ob.w, ob.h);
+        }
+      }
+
+      function randomInt(min, max){
+        //function from https://www.w3schools.com/js/js_random.asp
+        return Math.floor(Math.random() * (max-min+1))+min;
+      }
+
+      function generateObstacle(){
+        var type = randomInt(0,1);
+        var img;
+        if(type == 0){img = goodObstacles[randomInt(0,goodObstacles.length-1)];}
+        else{img = badObstacles[randomInt(0,badObstacles.length-1)];}
+        var newOb = {
+          "type": type,
+          "img": img,
+          "x": randomInt(20,canvas.width-20),
+          "y": canvas.height,
+          "w": 50,
+          "h": 50,
+          "vel": randomInt(-1, -5)
+        };
+        obstacles.push(newOb);
+      }
+
+      function moveObstacles(obs){
+        var updatedObs = [];
+        for(var i=0; i<obs.length; i++){
+          obs[i].y += obs[i].vel;
+          if(obs[i].y > -30){ //destroy ones out of frame
+            updatedObs.push(obs[i]);
+          }
+        }
+        return updatedObs;
+      }
+
+      function checkCollision(ob){
+        if((avatar.x <= ob.x && ob.x <= avatar.x+avatar.w 
+        || avatar.x <= ob.x+ob.w && ob.x+ob.w <= avatar.x+avatar.w
+        || ob.x <= avatar.x && avatar.x <= ob.x+ob.w
+        || ob.x <= avatar.x+avatar.w && avatar.x+avatar.w <= ob.x+ob.w)
+        && 
+        (avatar.y <= ob.y && ob.y <= avatar.y+avatar.h
+        || avatar.y <= ob.y+ob.h && ob.y+ob.h <= avatar.y+avatar.h
+        || ob.y <= avatar.y && avatar.y <= ob.y+ob.h
+        || ob.y <= avatar.y+avatar.h && avatar.y+avatar.h <= ob.y+ob.h)){
+          return true;
+        }
+        return false;
+      }
+
+      function handleCollisions(){
+        var newObs = [];
+        for(var i=0; i<obstacles.length; i++){
+          if(!checkCollision(obstacles[i])){ //no collision, so don't destroy object
+            newObs.push(obstacles[i]);
+          }
+          else{
+            if(obstacles[i].type == 0){ //good obstacle
+              userScore += 5;
+              if(userScore==15 || userScore==30){
+                playAudio("harp.mp3");
+              }
+            }
+            else if(userScore-5 >= -50){ //bad obstacle
+              userScore -= 5;
+            }
+            document.getElementById("userScore").innerHTML = "Score: "+userScore;
+          }
+        }
+        obstacles = newObs;
+      }
+
+      function useScore(){
+        //update avatar's appearance
+        var gameEnded = false;
+        if(userScore <= -50){
+          gameEnded = true;
+        }
+        else if(userScore < -30){ //range -45--30 = red devil
+          avatar.img = 5;
+        }
+        else if(userScore < -15){ //range -30--15 = devil
+          avatar.img = 4;
+        }
+        else if(userScore < 15){ //range -15-15 = normal
+          avatar.img = 1;
+        }
+        else if(userScore < 30){ //15-30 = super masculine
+          avatar.img = 2;
+        }
+        else if(userScore < 45){ //30-45 = angelic
+          avatar.img = 3;
+        }
+        else if(userScore >= 50){ //gameover
+          gameEnded = true;
+        }
+        return gameEnded;
+      }
+
+      function useKeyInput(){
+        if(keys[65] || keys[37]){
+          moveAvatar("left");
+        }
+        if(keys[68] || keys[39]){
+          moveAvatar("right");
+        }
+      }
+
+      function gameLoop(){
+        useKeyInput();
+        drawScene();
+        handleCollisions();
+        obstacles = moveObstacles(obstacles);
+
+        var gameEnded = useScore();
+        if(!gameEnded){requestAnimationFrame(gameLoop);}
+        else{time = new Date()-time; clearInterval(obInterval); setTimeout(endGameSequence, 1000);}
+      }
+
+      function endGameSequence(){
+        document.getElementById("gameDiv").style.display = "none";
+        document.getElementById("endDiv").style.display = "block";
+
+        var endMessage = "";
+        if(avatar.img == 5){
+          endMessage += "You lost.";
+        }
+        else{
+          var seconds = time/1000;
+          endMessage += "You won. Your time in seconds: "+seconds;
+        }
+        document.getElementById("endMessage").innerHTML = endMessage;
+
+        // var seconds = time/1000;
+        // document.getElementById("timeDisplay").innerHTML = "Your time in seconds: "+seconds;
+      }
+
+      function generateImages(imgNames){
+        var div = document.getElementById("imgSpace");
+        for(var i=0; i<imgNames.length; i++){
+          div.innerHTML += "<img id='" + imgNames[i] + "' src='" + imgNames[i] + "' width='" + avatar.w + "' height='" + avatar.h + "'>";
+        }
+      }
+
+      function playAudio(src){ //sources I used for audio help are listed in triviaQuestionPage.html.php
+        audio.src = src;
+        audio.play();
+      }
+      
+      function main(){
+        audio = new Audio();
+
+        document.getElementById("introDiv").style.display = "none";
+        document.getElementById("gameDiv").style.display = "block";
+
+        canvas = document.getElementById("canvas");
+        graphics = canvas.getContext("2d");
+        graphics.scale(1,-1);
+        graphics.translate(0,-canvas.height);
+
+        obstacles = [];
+        userScore = 0;
+        avatar = {"x":(canvas.width/2)-25,"y":10,"w":96,"h":144,"points":0,"vel":5,"dir":"l","img":1};
+        
+        avatarImgs = ["images/avatar1l.png", "images/avatar1r.png", "images/avatar2l.png", "images/avatar2r.png", "images/avatar3l.png", "images/avatar3r.png", "images/avatar4r.png", "images/avatar4l.png", "images/avatar5r.png", "images/avatar5l.png"];
+        badObstacles = ["images/wine.png", "images/meat.png", "images/apple.png"];
+        goodObstacles = ["images/water.png", "images/leaf.png"];
+        generateImages(avatarImgs);
+        generateImages(badObstacles);
+        generateImages(goodObstacles);
+
+        keys=[];
+        document.addEventListener("keydown", function(e){
+          keys[e.keyCode] = true;        
+        });
+        document.addEventListener("keyup", function(e){
+          keys[e.keyCode] = false;
+        });
+
+        time = new Date();
+        gameLoop();
+        obInterval = setInterval(generateObstacle, 1000);
+      }
+
+      var keys, canvas, graphics, obstacles, userScore, avatar, avatarImgs, badObstacles, goodObstacles, obInterval, time, audio;
+      
+    </script>
+  </body>
+</html>

@@ -1,0 +1,368 @@
+<html>
+  <head>
+    <style>
+      body{
+        font-family: verdana;
+        font-weight: normal;
+      }
+      canvas{
+        background-color: rgb(195, 228, 255);
+        width: 100%;
+        max-width: 800px;
+        margin: auto;
+        display: block;
+      }
+      h3{
+        text-align: center; 
+        font-weight: normal;
+      }
+      /* button{
+        background-color: transparent;
+        border: 2px solid black;
+        border-radius: 10px;
+      }
+      button:hover{
+        background-color: antiquewhite;
+        cursor: pointer;
+      } */
+      button{
+        background-color: transparent;
+        border: 2px solid black;
+        border-radius: 10px;
+      }
+      button:hover{
+        /* background-color: antiquewhite; */
+        cursor: pointer;
+        border-radius: 20px;
+        font-style: italic;
+      }
+      #introDiv{
+        display: block; 
+        margin: auto;
+        padding: 30px;
+      }
+      #endDiv{
+        /* display: block;  */
+        margin: auto;
+        padding: 30px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <form action="main.html">
+      <button type="submit" style="display:block; margin:auto; position:absolute; top:10px; right:10px;">Home</button>
+    </form>
+    <br>
+    <h1 style="text-align:center; font-weight:normal">Paper Wars</h1>
+
+    <div id="introDiv" style="width:500px;">
+      <div style="width:86px; display:block; margin:auto;">
+        <img src="images/quill1_flip.png" width="40px" height="60px">
+        <img src="images/quill2_flip.png" width="40px" height="60px">
+      </div>
+      <br>
+
+      <button style="display:block; margin:auto;" onclick="main();">Play</button>
+      <p style="text-align:center; font-size:20px;">Background Information</p>
+      <p>"I cannot praise a fugitive and cloistered virtue, unexercised and unbreathed." -Milton in <em>Areopagitica</em> (p.939)</p>
+      <p>Milton believed that one must prove their ideas by defending them against others. He did this in the following works:</p>
+      <ul>
+        <li><em>The Doctrine and Discipline of Divorce</em></li>
+        <li><em>Tetrachordon</em></li>
+        <li><em>Second Defense of the English People</em></li>
+      </ul>
+      <p>This game re-envisions the "paper-war" (p.1069) between Milton and his various rivals as one of the romantic physical battles Milton liked to describe in <em>Paradise Lost</em>. The background darkens from blue to black, illustrating how Milton lost his sight while writing political tracts.</p>
+      
+      <p style="text-align:center; font-size:20px;">How to Play</p>
+      <p>Use A and D or left and right arrows to move your quill.</p>
+      <p>Press SPACE BAR to launch a paper airplane toward the enemy.</p>
+      <p>Avoid the enemy's paper airplanes.</p>
+      <p>You have unlimited airplanes, but each takes 5 seconds to regenerate once it is used. This timing system reflects how Milton's own works were sometimes unsuccessful -- he did not always take down enemy thinkers immediately.</p>
+      <!-- <p>Each ammunitions slot takes 5 seconds to refill. The limited ammunitions system reflects how Milton's own works were sometimes unsuccessful -- he did not always take down enemy thinkers immediately.</p> -->
+    </div>
+
+    <div id="gameDiv" style="display:none;">
+      <div style="width: 45%; text-align: center; margin: auto;">
+        <p id="userHealth" style="display:inline-block;">Your Health: 10</p>
+        <p style="display:inline-block;"> ~ </p>
+        <p id="ammoCount" style="display:inline-block;">Planes: 3</p>
+        <p style="display:inline-block;"> ~ </p>
+        <p id="enemyHealth" style="display:inline-block;">Enemy Health: 10</p>
+      </div>
+      <canvas id="canvas" width="800" height="600"></canvas>
+      <div id="imgSpace" style="display:none;"></div>
+    </div>
+
+    <div id="endDiv" style="display:none; width:500px;">
+      <p id="endMessage" style="display: block; margin: auto;"></p>
+    </div>
+    
+
+    <script>
+      function drawEnemy(){
+        // graphics.fillRect(enemy.x, enemy.y, enemy.w, enemy.h);
+        var img = "images/quill2"+enemy.dir+".png";
+        graphics.drawImage(document.getElementById(img), enemy.x, enemy.y, enemy.w, enemy.h);
+      }
+
+      function drawAvatar(){
+        var img = "images/quill1"+avatar.dir+".png";
+        graphics.drawImage(document.getElementById(img), avatar.x, avatar.y, avatar.w, avatar.h);
+      }
+
+      function moveAvatar(dir){
+        switch(dir){
+          case "left": if(avatar.x-avatar.vel > 0){avatar.x -= avatar.vel}; avatar.dir="l"; break;
+          case "right": if(avatar.x+avatar.vel+avatar.w < canvas.width){avatar.x += avatar.vel}; avatar.dir="r"; break;
+        }
+      }
+
+      function changeBackgroundColor(){
+        //background color goes from rgb(195, 228, 255); to rgb(0,0,0); in 60 seconds
+        var milisecTotal = 60*1000;
+        var milisecElapsed = new Date() - time;
+        var newRed = 195 * (1 - (milisecElapsed/milisecTotal));
+        var newGreen = 228 * (1 - (milisecElapsed/milisecTotal));
+        var newBlue = 255 * (1 - (milisecElapsed/milisecTotal));
+        canvas.setAttribute("style", "background-color: rgb("+newRed+","+newGreen+","+newBlue+")");
+        ;
+      }
+
+      function drawScene(){
+        graphics.clearRect(0,0,canvas.width,canvas.height); //clear
+        changeBackgroundColor();
+        drawAvatar(); //draw avatar
+        drawAmmo(); //draw flying ammo
+        drawEnemyAmmo();
+        drawEnemy();
+      }
+
+      function drawAmmo(){
+        for(var i=0; i<ammoInstances.length; i++){
+          var inst = ammoInstances[i];
+          graphics.drawImage(document.getElementById("images/ammo1.png"), inst.x, inst.y, inst.w, inst.h);
+        }
+      }
+
+      function drawEnemyAmmo(){
+        for(var i=0; i<enemyAmmoInstances.length; i++){
+          var inst = enemyAmmoInstances[i];
+          graphics.drawImage(document.getElementById("images/ammo2.png"),inst.x, inst.y, inst.w, inst.h);
+        }
+      }
+
+      function randomInt(min, max){
+        //function from https://www.w3schools.com/js/js_random.asp
+        return Math.floor(Math.random() * (max-min+1))+min;
+      }
+
+      function checkCollision(ob1, ob2){
+        if((ob1.x <= ob2.x && ob2.x <= ob1.x+ob1.w 
+        || ob1.x <= ob2.x+ob2.w && ob2.x+ob2.w <= ob1.x+ob1.w
+        || ob2.x <= ob1.x && ob1.x <= ob2.x+ob2.w
+        || ob2.x <= ob1.x+ob1.w && ob1.x+ob1.w <= ob2.x+ob2.w)
+        && 
+        (ob1.y <= ob2.y && ob2.y <= ob1.y+ob1.h
+        || ob1.y <= ob2.y+ob2.h && ob2.y+ob2.h <= ob1.y+ob1.h
+        || ob2.y <= ob1.y && ob1.y <= ob2.y+ob2.h
+        || ob2.y <= ob1.y+ob1.h && ob1.y+ob1.h <= ob2.y+ob2.h)){
+          return true;
+        }
+        return false;
+      }
+
+      function updateAmmoPos(){
+        //for user ammo
+        var newInsts = [];
+        for(var i=0; i<ammoInstances.length; i++){
+          ammoInstances[i].y += ammoInstances[i].vel;
+          if(ammoInstances[i].y <= canvas.height){
+            newInsts.push(ammoInstances[i]);
+          }
+        }
+        ammoInstances = newInsts; 
+        
+        //for enemy ammo
+        var newInsts = [];
+        for(var i=0; i<enemyAmmoInstances.length; i++){
+          enemyAmmoInstances[i].y += enemyAmmoInstances[i].vel;
+          if(enemyAmmoInstances[i].y >= 0){
+            newInsts.push(enemyAmmoInstances[i]);
+          }
+        }
+        enemyAmmoInstances = newInsts;
+      }
+
+      function checkAllCollisions(){
+        var gameEnded = false;
+
+        //between user's planes and enemy
+        var newInsts = [];
+        for(var i=0; i<ammoInstances.length; i++){
+          if(checkCollision(enemy, ammoInstances[i])){
+            enemy.health -= 1;
+            document.getElementById("enemyHealth").innerHTML = "Enemy Health: "+enemy.health;
+            if(enemy.health <= 0){
+              gameEnded = true;
+            }
+          }
+          else{
+            newInsts.push(ammoInstances[i]);
+          }
+        }
+        ammoInstances = newInsts;
+
+        //between enemy's planes and user
+        var newInsts = [];
+        for(var i=0; i<enemyAmmoInstances.length; i++){
+          if(checkCollision(avatar, enemyAmmoInstances[i])){
+            avatar.health -= 1;
+            document.getElementById("userHealth").innerHTML = "Your Health: "+avatar.health;
+            if(avatar.health <= 0){
+              gameEnded = true;
+            }
+          }
+          else{
+            newInsts.push(enemyAmmoInstances[i]);
+          }
+        }
+        enemyAmmoInstances = newInsts;
+
+        return gameEnded;
+      }
+
+      function updateEnemyPos(){
+        if(enemy.dir=="l"){
+          if(enemy.x-enemy.vel>0){
+            enemy.x -= enemy.vel;
+          }
+          else{
+            enemy.dir = "r";
+          }
+        }
+        else{
+          if(enemy.x+enemy.vel < canvas.width-enemy.w){
+            enemy.x += enemy.vel;
+          }
+          else{
+            enemy.dir = "l";
+          }
+        }
+      }
+
+      function gameLoop(){
+        useKeyInput();
+        drawScene();
+        updateEnemyPos();
+        updateAmmoPos();
+
+        var gameEnded = checkAllCollisions();
+        if(!gameEnded){requestAnimationFrame(gameLoop);}
+        else{
+          clearInterval(enemyProjInterval);
+          setTimeout(endGameSequence, 1000);
+        }
+      }
+
+      function endGameSequence(){
+        document.getElementById("gameDiv").style.display = "none";
+        document.getElementById("endDiv").style.display = "block";
+
+        var message = "";
+        if(avatar.health <= 0){
+          message += "You lost"
+        }
+        else{
+          var finalTime = new Date();
+          message += "You won. Time elapsed: "+ ((finalTime - time)/1000);
+        }
+        document.getElementById("endMessage").innerHTML = message;
+      }
+
+      function useKeyInput(){
+        if(keys[65] || keys[37]){
+          moveAvatar("left");
+        }
+        if(keys[68] || keys[39]){
+          moveAvatar("right");
+        }
+      }
+
+      function createProjectile(){
+        if(ammoCount > 0){
+          var newAmmo = {
+            "x": avatar.x+Math.floor(avatar.w/2),
+            "y": avatar.y+avatar.h,
+            "w": 40,
+            "h": 60,
+            "vel": 10
+          }
+          ammoInstances.push(newAmmo);
+          ammoCount -= 1;
+          document.getElementById("ammoCount").innerHTML = "Planes: "+ammoCount;
+          
+          setTimeout(function(){
+            ammoCount += 1;
+            document.getElementById("ammoCount").innerHTML = "Planes: "+ammoCount;
+          }, 5000);
+        }
+      }
+
+      function createEnemyProjectile(){
+        var newAmmo = {
+          "x": enemy.x+Math.floor(enemy.w/2),
+          "y": enemy.y,
+          "w": 40,
+          "h": 60,
+          "vel": -10
+        }
+        enemyAmmoInstances.push(newAmmo);
+      }
+
+      function generateImages(imgNames){
+        var div = document.getElementById("imgSpace");
+        for(var i=0; i<imgNames.length; i++){
+          div.innerHTML += "<img id='" + imgNames[i] + "' src='" + imgNames[i] + "' width='" + avatar.w + "' height='" + avatar.h + "'>";
+        }
+      }
+
+      //keyboard input: https://stackoverflow.com/questions/13640061/get-a-list-of-all-currently-pressed-keys-in-javascript
+      function main(){
+        document.getElementById("introDiv").style.display = "none";
+        document.getElementById("gameDiv").style.display = "block";
+
+        keys=[];
+        document.addEventListener("keydown", function(e){
+          if(e.keyCode == 32 && !keys[32]){
+            createProjectile();
+          }
+          keys[e.keyCode] = true;        
+        });
+        document.addEventListener("keyup", function(e){
+          keys[e.keyCode] = false;
+        });
+
+        canvas = document.getElementById("canvas");
+        graphics = canvas.getContext("2d");
+        graphics.scale(1,-1);
+        graphics.translate(0,-canvas.height);
+
+        ammoInstances = [];
+        enemyAmmoInstances = [];
+        ammoCount = 3;
+        avatar = {"x":(canvas.width/2)-25,"y":10,"w":74.4,"h":144,"points":0,"vel":3,"dir":"l","health":10}; 
+        enemy = {"x": (canvas.width/2)-25,"y":canvas.height-154,"w":96,"h":144,"vel":4,"dir":"l","health":10};
+
+        generateImages(["images/quill1l.png","images/quill1r.png","images/ammo1.png", "images/ammo2.png", "images/quill1r.png", "images/quill1l.png", "images/quill2r.png", "images/quill2l.png"]);
+
+        gameLoop();
+        time = new Date();
+        enemyProjInterval = setInterval(createEnemyProjectile, 800);
+      }
+
+      var keys, canvas, graphics, ammoInstances, ammoCount, avatar, enemy, enemyProjInterval, enemyAmmoInstances, time;
+
+    </script>
+  </body>
+</html>

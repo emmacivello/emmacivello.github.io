@@ -1,0 +1,341 @@
+<html>
+  <head>
+    <style>
+      body{
+        font-family: verdana;
+        font-weight: normal;
+      }
+      canvas{
+        background-color: rgb(195, 228, 255);
+        width: 100%;
+        max-width: 800px;
+        margin: auto;
+        display: block;
+        /* border: 8px ridge cornsilk; makes it too wide */
+      }
+      h3{
+        text-align: center; 
+        font-weight: normal;
+      }
+      button{
+        background-color: transparent;
+        border: 2px solid black;
+        border-radius: 10px;
+      }
+      button:hover{
+        /* background-color: antiquewhite; */
+        cursor: pointer;
+        border-radius: 20px;
+        font-style: italic;
+      }
+      #introDiv{
+        display: block; 
+        margin: auto;
+        padding: 30px;
+      }
+      #endDiv{
+        /* display: block;  */
+        margin: auto;
+        padding: 30px;
+      }
+      .grid1{
+        display: grid;
+        grid-template-columns: 50% 50%;
+      }
+      .grid2{
+        display: grid;
+        grid-template-columns: 30% 30% 30%;
+        gap: 5%;
+      }
+    </style>
+  </head>
+  <body>
+    <form action="main.html">
+      <button type="submit" style="display:block; margin:auto; position:absolute; top:10px; right:10px;">Home</button>
+    </form>
+    <br>
+    <h1 style="text-align:center; font-weight:normal">First</h1>
+    
+    <div id="introDiv" style="width:500px;">
+      <div class="grid2">
+        <div>
+          <button style="width:150px; margin:auto;" onclick="main('calliope');"><img src="images/calliope_flip.png"><br>Play as Calliope<br>(<em>Lycidas</em>)</button>
+        </div>
+        <div>
+          <button style="width:150px; margin:auto;" onclick="main('urania');"><img src="images/urania_flip.png"><br>Play as Urania<br>(<em>Paradise Lost</em> Book 7)</button>
+        </div>
+        <div>
+          <button style="width:150px; margin:auto;" onclick="main('dove');"><img src="images/dove_flip.png"><br>Play as God/Dove<br>(<em>Paradise Lost</em> Book 1)</button>
+        </div>
+      </div>
+      <p style="text-align:center; font-size:20px;">Background Information</p>
+      <p>Milton was interested in writing about "firsts," most famously "man's first disobedience" (<em>PL</em>, 1.1), and in following epic tradition, invoking muses to aid his writing. Often, the firsts and the muses coincide. For example:</p>
+      <ul>
+        <li>
+          <p>"O run, prevent them with thy humble ode" (<em>On the Morning of Christ's Nativity</em>, 24). The Heavenly muse will deliver Milton's poem to the newborn Jesus first, before the wise men deliver their gifts.</p>
+        </li>
+        <li>
+          <p>"Instruct me, for thou know'st; thou from the first / Wast present" (<em>PL</em> 1.19-20). Moses' muse (God) will help Milton visualize what occurred.</p>
+        </li>
+      </ul>
+      
+      
+      <hr style="border-top:dotted 1px;">
+      <p style="text-align:center; font-size:20px;">How to Play</p>
+      <p>Be bold like Milton: control the actions of a muse. Press SPACE BAR to make the muse jump over obstacles.</p>
+      <p>The game's end screen will reveal how well your time travel matches up against the travels Milton makes in his writing. Goal: move backwards through time as far as you can.</p>
+      <p>Easter egg: Keep an eye out for Galileo in the background. He might be on a hill <em>OR</em> in a valley.</p>
+    </div>
+    <div id="gameDiv" style="display:none;">
+      <h3 id="timeText">Years passed: 0</h3>
+      <canvas id="canvas" width="800" height="600"></canvas>
+      <div id="imgSpace" style="display:none;"></div>
+    </div>
+    <div id="endDiv" style="display:none; width:500px;">
+      <p id="timeDisplay">hi</p>
+    </div>
+    
+
+    <script>
+      function drawAvatar(){
+        graphics.drawImage(document.getElementById("images/"+avatar.img+".png"), avatar.x, avatar.y, avatar.w, avatar.h);
+        // graphics.fillStyle = "blue";
+        // graphics.fillRect(avatar.x, avatar.y, avatar.w, avatar.h);
+      }
+
+      // function moveAvatar(dir){
+      //   switch(dir){
+      //     case "left": if(avatar.x-avatar.vel > 0){avatar.x -= avatar.vel}; avatar.dir="l"; break;
+      //     case "right": if(avatar.x+avatar.vel+avatar.w < canvas.width){avatar.x += avatar.vel}; avatar.dir="r"; break;
+      //   }
+      // }
+
+      function drawBackground(){
+        backgroundDivision++;
+        if(backgroundDivision == canvas.width){
+          backgroundDivision = 0;
+          if(backgroundLeading == 0){
+            backgroundLeading = 1;
+          }
+          else{
+            backgroundLeading = 0;
+          }
+        }
+        if(backgroundLeading == 0){
+          graphics.drawImage(document.getElementById(backgrounds[0]),backgroundDivision,0,canvas.width,canvas.height);
+          graphics.drawImage(document.getElementById(backgrounds[1]),backgroundDivision-canvas.width,0,canvas.width,canvas.height);
+        }
+        else{
+          graphics.drawImage(document.getElementById(backgrounds[1]),backgroundDivision,0,canvas.width,canvas.height);
+          graphics.drawImage(document.getElementById(backgrounds[0]),backgroundDivision-canvas.width,0,canvas.width,canvas.height);
+        }
+
+
+        //backgroundDivision, backgroundLeading, backgrounds
+        // graphics.drawImage(document.getElementById("images/first_background.png"),backgroundDivision,0,canvas.width,canvas.height);
+        // graphics.drawImage(document.getElementById("images/first_background.png"),backgroundDivision,0,canvas.width,canvas.height);
+      }
+
+      function drawScene(){
+        graphics.clearRect(0,0,canvas.width,canvas.height); //clear
+        drawBackground();
+        // graphics.fillStyle = "#BC9E82"; //ground
+        // graphics.fillStyle = "rgb(32,50,7)";
+        graphics.fillStyle = "rgb(68,103,19)";
+        graphics.fillRect(0,0,canvas.width,60);
+        drawAvatar(); //draw avatar
+        drawObstacles(); //draw obstacles
+      }
+
+      function drawObstacles(){
+        for(var i=0; i<obstacles.length; i++){
+          var ob = obstacles[i];
+          graphics.drawImage(document.getElementById("images/rock.png"), ob.x, ob.y, ob.w, ob.h);
+          // graphics.fillStyle = "black";
+          // graphics.fillRect(ob.x, ob.y, ob.w, ob.h);
+        }
+      }
+
+      function randomInt(min, max){
+        //function from https://www.w3schools.com/js/js_random.asp
+        return Math.floor(Math.random() * (max-min+1))+min;
+      }
+
+      function generateObstacle(){
+        // var type = randomInt(0,1);
+        // var img;
+        // if(type == 0){img = goodObstacles[randomInt(0,goodObstacles.length-1)];}
+        // else{img = badObstacles[randomInt(0,badObstacles.length-1)];}
+
+        // var maxTime = 60*1000;
+        // var crtTime = new Date();
+        // var vel = 8 + 14*Math.min(1, (crtTime-time)/maxTime);
+        // console.log(vel);
+
+        var newOb = {
+          // "type": type,
+          // "img": img,
+          // "x": randomInt(20,canvas.width-20),
+          // "y": canvas.height,
+          "x": 0,
+          "y": 10,
+          // "w": 60,
+          // "h": 50.4,
+          "w": 75,
+          "h": 63,
+          "vel": 8
+        };
+        obstacles.push(newOb);
+        // console.log(obstacles);
+
+        var times = [800, 900, 1000, 1400, 1600, 2200];
+        if(!gameOver){
+          setTimeout(generateObstacle, times[randomInt(0,times.length-1)]);
+        }
+      }
+
+      function moveObstacles(){
+        var updatedObs = [];
+        for(var i=0; i<obstacles.length; i++){
+          obstacles[i].x += obstacles[i].vel;
+          if(obstacles[i].x <= canvas.width){ //destroy ones out of frame
+            updatedObs.push(obstacles[i]);
+          }
+        }
+        obstacles = updatedObs;
+      }
+
+      function checkCollision(ob1, ob2){
+        if((ob1.x <= ob2.x && ob2.x <= ob1.x+ob1.w 
+        || ob1.x <= ob2.x+ob2.w && ob2.x+ob2.w <= ob1.x+ob1.w
+        || ob2.x <= ob1.x && ob1.x <= ob2.x+ob2.w
+        || ob2.x <= ob1.x+ob1.w && ob1.x+ob1.w <= ob2.x+ob2.w)
+        && 
+        (ob1.y <= ob2.y && ob2.y <= ob1.y+ob1.h
+        || ob1.y <= ob2.y+ob2.h && ob2.y+ob2.h <= ob1.y+ob1.h
+        || ob2.y <= ob1.y && ob1.y <= ob2.y+ob2.h
+        || ob2.y <= ob1.y+ob1.h && ob1.y+ob1.h <= ob2.y+ob2.h)){
+          return true;
+        }
+        return false;
+      }
+
+      function handleCollisions(){
+        var newObs = [];
+        for(var i=0; i<obstacles.length; i++){
+          if(checkCollision(obstacles[i], avatar)){
+            return true;
+          }
+        }
+        // obstacles = newObs;
+        return false;
+      }
+
+      // function useScore(){
+      //   return false;
+      // }
+
+      function updateAvatarPos(){
+        avatar.vel += gravity;
+        avatar.y += avatar.vel;
+        if(avatar.y <= avatar.yBase){
+          avatar.y = avatar.yBase;
+          avatar.vel = 0;
+        }
+      }
+
+      function showTime(){
+        var yrsElapsed = Math.round((new Date() - time)/1000)*100;
+        document.getElementById("timeText").innerHTML = "Years passed: "+yrsElapsed;
+      }
+
+      function gameLoop(){
+        updateAvatarPos();
+        moveObstacles();
+        drawScene();
+        showTime();
+        var gameEnded = handleCollisions();
+
+        if(!gameEnded){requestAnimationFrame(gameLoop);}
+        else{setTimeout(endGameSequence, 1000);}
+      }
+
+      function endGameSequence(){
+        document.getElementById("gameDiv").style.display = "none";
+        document.getElementById("endDiv").style.display = "block";
+        var secElapsed = (new Date()-time)/1000;
+        var yrsElapsed = Math.round(secElapsed * 100);
+        var textStr = "";
+        textStr += "You traveled back: "+yrsElapsed+" years <br><br>";
+
+        var events = [{"title":"Poem to Nativity (2000 yrs)","date":2000}, {"title":"Firearms to War in Heaven (3000 yrs)", "date":3000}];
+        textStr += "You accomplished the following deliveries:<ul>";
+        for(var i=0; i<events.length; i++){
+          if(events[i].date <= yrsElapsed){
+            textStr += "<li>"+events[i].title+"</li>";
+          }
+        }
+        textStr += "</ul>";
+        textStr += "You missed the following deliveries:<ul>";
+        for(var i=0; i<events.length; i++){
+          if(events[i].date > yrsElapsed){
+            textStr += "<li>"+events[i].title+"</li>";
+          }
+        }
+        textStr += "</ul>";
+        document.getElementById("timeDisplay").innerHTML = textStr;
+
+        //gone back in time X seconds -> X years
+        //2000 yrs back = Nativity
+        //2800 yrs back = A+E's first moments
+        //3000 yrs = War in Heaven
+      }
+
+      function generateImages(imgNames){
+        var div = document.getElementById("imgSpace");
+        for(var i=0; i<imgNames.length; i++){
+          div.innerHTML += "<img id='" + imgNames[i] + "' src='" + imgNames[i] + "' width='" + avatar.w + "' height='" + avatar.h + "'>";
+        }
+      }
+      
+      function main(muse){
+        audio = new Audio();
+
+        document.getElementById("introDiv").style.display = "none";
+        document.getElementById("gameDiv").style.display = "block";
+
+        canvas = document.getElementById("canvas");
+        graphics = canvas.getContext("2d");
+        graphics.scale(1,-1);
+        graphics.translate(0,-canvas.height);
+        console.log(canvas.width);
+        console.log(canvas.height);
+        
+        gravity = -0.98;
+        jumpVel = 20;
+        avatar = {"x":canvas.width - 130,"yBase":10,"y":10,"w":96,"h":144,"points":0,"vel":0,"dir":"l","img":1};
+        avatar.img = muse;
+        obstacles = [];
+        gameOver = false;
+        backgroundDivision = 0;
+        backgroundLeading = 0;
+        backgrounds = ["images/first_background.png", "images/first_background2.png"];
+
+        imgs = ["images/calliope.png", "images/urania.png", "images/dove.png", "images/first_background.png", "images/first_background2.png", "images/rock.png"];
+        generateImages(imgs);
+        
+        document.addEventListener("keydown", function(e){
+          if(e.keyCode == 32 && avatar.y==avatar.yBase){ //space bar + not currently in air
+            avatar.vel = jumpVel; //jump
+          }
+        });
+
+        time = new Date();
+        gameLoop();
+        setTimeout(generateObstacle, 1000);
+      }
+      var backgroundDivision, backgroundLeading, backgrounds, gameOver, jumpVel, gravity, keys, canvas, graphics, obstacles, userScore, avatar, imgs, badObstacles, goodObstacles, obInterval, time, audio;
+      
+    </script>
+  </body>
+</html>
