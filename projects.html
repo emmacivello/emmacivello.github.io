@@ -1,0 +1,335 @@
+<html>
+  <head>
+    <title>Emma's Portfolio</title>
+    <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">
+    <style>
+      :root{
+        --dark-brown: #605B56;
+        --brown: #837A75;
+        --green: #ACC18A;
+        --light-green: #DAFEB7;
+        --beige: #F2FBE0;
+      }
+      *{
+        font-family: sans-serif;
+        color: var(--brown);
+      }
+      a, h1, h2, h3, h4, h5{
+        color: var(--dark-brown)
+      }
+      #portrait{
+        width: 80%;
+        max-width: 200px;
+        border-radius: 2%;
+        border: 2px solid var(--brown);
+        box-shadow: 5px 5px 10px var(--dark-brown);
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 40px;
+      }
+      body{
+        margin: 0;
+      }
+    
+
+      .top-menu{
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: var(--dark-brown);
+
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 2;
+      }
+      .menu-elem{
+        float: right;
+      }
+      .menu-elem a{
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        line-height: 22px;
+      }
+      .menu-elem a:hover{
+        background-color: var(--brown);
+      }
+      .menu-elem span{
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        line-height: 22px;
+      }
+
+      .project-details{
+        max-height: 0;
+        transition: max-height 0.2s ease-out;
+        overflow: hidden;
+      }
+      .details-button{
+        cursor: pointer;
+        background: none;
+        border: none;
+        display: block;
+        margin: auto;
+      }
+      .project-element{
+        width: 70%;
+        max-width: 680px;
+        border-radius: 4px;
+        border: 1px solid var(--brown);
+        margin: auto;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        padding: 10px;
+      }
+      .project-element-shadow{
+        box-shadow: 5px 5px 10px var(--dark-brown);
+      }
+      .project-summary-cols{
+        display: grid;
+        grid-template-columns: 35% 60%;
+        gap: 5%;
+      }
+      .thumbnail-image{
+        height: 200px;
+        position: relative;
+        left: 50%;
+        transform: translate(-50%, 0%);
+        margin-top: 30px;
+      }
+
+      hr{
+        width: 40%;
+        border: none;
+        border-top: 1px solid var(--brown);
+      }
+    </style>
+  </head>
+  <body>
+    <ul class="top-menu">
+      <li class="menu-elem" style="float: left; font-size: larger; margin-left: 20px;"><span>Emma Civello's Portfolio</span></li>
+      <li class="menu-elem"><a href="https://www.linkedin.com/in/emma-civello">LinkedIn</a></li>
+      <li class="menu-elem" style="background-color: var(--brown);"><a href="#">Projects</a></li>
+      <li class="menu-elem"><a href="index.html">About</a></li>
+    </ul>
+    
+    <!-- <div style="position: fixed; top: 0; height: 80; background-color: red;"></div> -->
+    <!-- PROJECT ELEMENT TEMPLATE: -->
+    <!-- <div class="project-element">
+      <div class="project-summary">
+        <div class="project-summary-cols">
+          <div style="width: 100%; overflow: hidden;">
+            <img src="images/dragon.png" class="thumbnail-image">
+          </div>
+          <div>
+            <h3>Project Title</h3>
+            <p></p>
+            <h5 style="display: inline;">Languages/Tools:</h5>
+            <p style="display: inline;"></p>
+            <br><br>
+            <a class="fa fa-github"> View Code</a>
+            <a class="fa fa-external-link"> View Code</a>
+          </div>
+        </div>
+        <button class="details-button" onclick="on_project_summary_click(this)">More Details <span class='fa fa-caret-down'></span></button>
+      </div>
+      <div class="project-details">
+        <hr>
+        <h5>Programming Highlights:</h5>
+        <p></p>
+      </div>
+    </div> -->
+
+
+
+    <div style="height: 80px;"></div>
+    <h1 style="text-align: center;">Projects</h1>
+    
+
+
+
+    <div class="project-element">
+      <div class="project-summary">
+        <div class="project-summary-cols">
+          <div style="width: 100%; overflow: hidden;">
+            <img src="images/ekphrasis-thumbnail.png" class="thumbnail-image">
+          </div>
+          <div>
+            <h3>Ekphrasis Defined Designs Website<br>(Summer 2024)</h3>
+            <p>Website featuring galleries and educational resources related to weaving.</p>
+            <h5 style="display: inline;">Languages/Tools:</h5>
+            <p style="display: inline;">WordPress, Elementor & Essential Add-ons for Elementor, CSS, JavaScript, HTML, Photoshop</p>
+            <br><br>
+            <a class="fa fa-external-link" href="https://ekphrasisweaver.com"> Visit Website</a><br><br>
+          </div>
+        </div>
+        <button class="details-button" onclick="on_project_summary_click(this)">More Details <span class='fa fa-caret-down'></span></button>
+      </div>
+      <div class="project-details">
+        <hr>
+        <h5>Programming Highlights:</h5>
+        <ul>
+          <li>Created custom HTML/CSS image overlays.</li>
+          <li>With JavaScript, overrode default image decoding to prevent load delay and thus improve visual experience.</li>
+          <li>With Advanced Custom Fields plug-in, overrode default fields in VS Event List plug-in to improve time and date formatting.</li>
+        </ul>
+      </div>
+    </div>
+
+
+
+
+    <div class="project-element">
+      <div class="project-summary">
+        <div class="project-summary-cols">
+          <div style="width: 100%; overflow: hidden;">
+            <img src="images/nature-jigsaw-puzzles-thumbnail.png" class="thumbnail-image">
+          </div>
+          <div>
+            <h3>Nature Jigsaw Puzzles (Summer 2024)</h3>
+            <p>Passion project to increase my knowledge of Godot's nodes and features.</p>
+            <h5 style="display: inline;">Languages/Tools:</h5>
+            <p style="display: inline;"> Godot Game Engine with GDScript, Photoshop</p>
+            <br><br>
+            <a class="fa fa-github" href="https://github.com/emmacivello/nature-jigsaw-puzzles"> View Code</a> | <a class="fa fa-external-link" href="https://emmacivello.itch.io/nature-jigsaw-puzzles"> Play Game</a>
+          </div>
+        </div>
+        <button class="details-button" onclick="on_project_summary_click(this)">More Details <span class='fa fa-caret-down'></span></button>
+      </div>
+      <div class="project-details">
+        <hr>
+        <h5>Programming Highlights:</h5>
+        <ul>
+          <li>
+            Developed algorithm for generating puzzle pieces at runtime:
+            <ul>
+              <li>Puzzle pieces are scaled in response to user's choice of # rows and # cols.</li>
+              <li>Piece edges are randomized (knob/socket/flat) and interlock correctly with neighboring edges.</li>
+              <li>Piece images are subregions of a user-chosen image that is scaled, cropped, and centered based on puzzle size.</li>
+            </ul>
+          </li>
+          <li>Tracked and optimized physics performance with Godot's debugging monitor.</li>
+          <li>Corrected UI bugs that occurred during export to HTML5.</li>
+        </ul>
+      </div>
+    </div>
+
+
+
+
+
+    <div class="project-element">
+      <div class="project-summary">
+        <div class="project-summary-cols">
+          <div style="width: 100%; overflow: hidden;">
+            <img src="images/computer-vision-thumbnail.png" class="thumbnail-image">
+          </div>
+          <div>
+            <h3>Computer Vision Portfolio Excerpts<br>(Fall 2022)</h3>
+            <p>Self-directed exercises for seminar -- implemented and tested vision techniques that I found interesting.</p>
+            <h5 style="display: inline;">Languages/Tools:</h5>
+            <p style="display: inline;">Python with numpy, matplotlib, Image, torchvision, cv2</p>
+            <br><br>
+            <a class="fa fa-file-pdf-o" href="cv_portfolio/EmmaCivello_Exercise2_HistogramEqualization.pdf"> Histogram Equalization</a>
+            <br><br>
+            <a class="fa fa-file-pdf-o" href="cv_portfolio/EmmaCivello_Exercise7_TextureSynthesisTwoMethods.pdf"> Texture Synthesis</a>
+            <br><br>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+    <div class="project-element">
+      <div class="project-summary">
+        <div class="project-summary-cols">
+          <div style="width: 100%; overflow: hidden;">
+            <img src="images/practice-buddy-thumbnail.png" class="thumbnail-image">
+          </div>
+          <div>
+            <h3>Music Practice Buddy App (Fall 2022)</h3>
+            <p>Final project for Advanced Programming Techniques -- web app with tuner, metronome, musical trivia. User, admin, and demo sign-in options.</p>
+            <h5 style="display: inline;">Languages/Tools:</h5>
+            <p style="display: inline;">CSS, JavaScript, PHP, HTML, JSON, MAMP</p>
+            <br><br>
+            <a class="fa fa-github" href="https://github.com/emmacivello/music-practice-buddy-app"> View Code</a><br><br>
+          </div>
+        </div>
+        <button class="details-button" onclick="on_project_summary_click(this)">More Details <span class='fa fa-caret-down'></span></button>
+      </div>
+      <div class="project-details">
+        <hr>
+        <h5>Programming Highlights:</h5>
+        <ul>
+          <li>Read from and wrote to JSON files with Ajax requests.</li>
+          <li>Created CSS animations in trivia game.</li>
+          <li>Used JavaScript timing functions for metronome beats and trivia game.</li>
+        </ul>
+      </div>
+    </div>
+
+
+
+
+
+    <div class="project-element">
+      <div class="project-summary">
+        <div class="project-summary-cols">
+          <div style="width: 100%; overflow: hidden;">
+            <img src="images/dragon.png" class="thumbnail-image">
+          </div>
+          <div>
+            <h3>Forest Flight Game (Fall 2021)</h3>
+            <p>Final project for Computer Graphics -- create an animated 3d game.</p>
+            <h5 style="display: inline;">Languages/Tools:</h5>
+            <p style="display: inline;">JavaScript with Three.js / WebGL, Blender, HTML</p>
+            <br><br>
+            <a class="fa fa-external-link" href="https://replit.com/@EmmaCivello/Civello-CSC240-Final-Project#readme.txt"> View Code and Play Game</a>
+          </div>
+        </div>
+        <button class="details-button" onclick="on_project_summary_click(this)">More Details <span class='fa fa-caret-down'></span></button>
+      </div>
+      <div class="project-details">
+        <hr>
+        <h5>Programming Highlights:</h5>
+        <ul>
+          <li>Hierarchical model for character body</li>
+          <li>Texture-mapped environment</li>
+          <li>Collision detection</li>
+          <li>Particle effects</li>
+          <li>Directional and ambient lighting</li>
+        </ul>
+      </div>
+    </div>
+    
+    <script>
+      function on_project_summary_click(button){
+        var proj_details = button.parentNode.parentNode.getElementsByClassName("project-details")[0];
+        var proj = button.parentNode.parentNode
+
+        console.log(button.innerHTML)
+        if(button.innerHTML == "More Details <span class=\"fa fa-caret-down\"></span>"){
+          button.innerHTML = "Hide Details <span class=\"fa fa-caret-up\"></span>";
+          proj_details.style.maxHeight = proj_details.scrollHeight + "px";
+        }
+        else{
+          button.innerHTML = "More Details <span class=\"fa fa-caret-down\"></span>";
+          proj_details.style.maxHeight = 0+"px";
+        }
+      }
+    </script>
+
+  </body>
+</html>
