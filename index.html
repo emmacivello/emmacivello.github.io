@@ -1,0 +1,131 @@
+<html>
+  <head>
+    <title>Emma's Portfolio</title>
+    <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">
+    <style>
+      :root{
+        --dark-brown: #605B56;
+        --brown: #837A75;
+        --green: #ACC18A;
+        --light-green: #DAFEB7;
+        --beige: #F2FBE0;
+      }
+      *{
+        font-family: sans-serif;
+        color: var(--brown);
+      }
+      a, h1, h2, h3, h4, h5{
+        color: var(--dark-brown)
+      }
+      #portrait{
+        float: right;
+        width: 30%;
+        max-width: 230px;
+        margin-left: 20px;
+        margin-bottom: 20px;
+        border: 2px solid var(--brown);
+        border-radius: 4px;
+        box-shadow: 5px 5px 10px var(--dark-brown);
+      }
+      #portrait-caption{
+        width: 80%;
+        max-width: 200px;
+        display: block;
+        margin: auto;
+      }
+      body{
+        margin: 0;
+      }
+    
+
+      .top-menu{
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: var(--dark-brown);
+
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 2;
+      }
+      .menu-elem{
+        float: right;
+      }
+      .menu-elem a{
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        line-height: 22px;
+      }
+      .menu-elem a:hover{
+        background-color: var(--brown);
+      }
+      .menu-elem span{
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        line-height: 22px;
+      }
+
+      #left-contents{
+        position: absolute;
+        top: 80;
+        left: 0;
+        width: 76%;
+        height: 100%;
+      }
+      #right-contents{
+        position: fixed;
+        top: 40;
+        right: 0;
+        width: 24%;
+      }
+    </style>
+  </head>
+  <body>
+    <ul class="top-menu">
+      <li class="menu-elem" style="float: left; font-size: larger; margin-left: 20px;"><span>Emma Civello's Portfolio</span></li>
+      <li class="menu-elem"><a href="https://www.linkedin.com/in/emma-civello">LinkedIn</a></li>
+      <li class="menu-elem"><a href="projects.html">Projects</a></li>
+      <li class="menu-elem" style="background-color: var(--brown);"><a href="index.html">About</a></li>
+    </ul>
+
+    <div style="height: 80px;"></div>
+    <h1 style="text-align: center;">Emma Civello's Portfolio</h1>
+    <div style="width: 70%; max-width: 680px; display: block; margin: auto;">
+      <h3>About</h3>
+      <img id="portrait" src="images/headshot.JPG">
+      <p>Hi, I'm Emma Civello. I'm a recent graduate of Smith College, where I double-majored in Computer Science and English Language & Literature. I am currently looking for programming positions, and I am especially interested in UI/UX programming, computer graphics, and video game development.</p>
+      <p>At Smith, I was a programmer in Professor Ileana Streinu's lab, where I contributed to projects that apply graph theory to robots and crystals. I worked on Mathematica prototypes, a web app, and most recently, a complete redesign of the lab website. I was also a developer on the Mothitor (moth-monitor) project, and I designed and helped assemble a multi-GPU workstation for the CS department's machine learning projects. Finally, I organized and analyzed ancient and modern sources for the virtual recreation of the Porticus of Livia, a project with Professor Barbara Kellum and the Smith Imaging Center.</p>
+      <p>Outside of programming, I enjoy reading science fiction and playing cello and piano.</p>
+    
+      <h3>Relevant Coursework</h3>
+      <ul>
+        <li>Introduction to Computer Science</li>
+        <li>Data Structures</li>
+        <li>Computer Graphics</li>
+        <li>Intro to Discrete Mathematics</li>
+        <li>Animating Graph Theory (Indep. Study)</li>
+        <li>Microprocessors and Assebly Language</li>
+        <li>Intro to Digital Media</li>
+        <li>Advanced Programming Techniques</li>
+        <li>Computer Vision and Image Processing</li>
+        <li>Theory of Computation</li>
+        <li>Linear Algebra</li>
+        <li>Intro to Database Systems</li>
+        <li>Techniques in Digital Art History</li>
+        <li>Network Security</li>
+        <li>Intro to Artificial Intelligence</li>
+        <li>A Multi-GPU Workstation (Indep. Study)</li>
+      </ul>
+    </div>
+
+  </body>
+</html>
